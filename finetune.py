@@ -50,7 +50,7 @@ def load_models():
         from gen_models.resnet_small import ResNetGenerator
         from dis_models.resnet_small import ResNetAC
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
-        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass)
+        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass, bn=True) #XXX here we choose bn=True, because of improper initialization
     elif opt.model == "resnet_imagenet":
         from gen_models.resnet import ResNetGenerator
         from dis_models.resnet import ResNetAC
@@ -128,9 +128,13 @@ def test_acc(loader_test, dis):
             _, d_multi = dis(adv_input)
         _, idx = torch.max(d_multi.data, dim=1)
         label_correct = idx.eq(y_real)
-        correct_label += torch.sum(label_correct)
+        correct_label += torch.sum(label_correct).item()
         total += y_real.numel()
-    print('test_acc: {}'.format(correct_label / total))
+    print(f'test_acc: {correct_label/total}')
+
+def get_optimizer(parameters):
+    #optimizer = torch.optim.SGD(dis.parameters(), lr=opt.lr, momentum=0.9, weight_decay=5.0e-4)
+    return torch.optim.Adam(parameters, lr=opt.lr)
 
 def main():
     # model
@@ -138,7 +142,7 @@ def main():
     # data
     loader, loader_test = make_dataset()
     # optimizer
-    optimizer = torch.optim.SGD(dis.parameters(), lr=opt.lr, momentum=0.9, weight_decay=5.0e-4)
+    optimizer = get_optimizer(dis.parameters())
     # loss function
     loss_f = nn.CrossEntropyLoss()
     # buffer
@@ -146,7 +150,7 @@ def main():
     noise_v = Variable(noise)
     noise_y = torch.LongTensor(opt.batch_size).zero_().cuda()
     noise_y_v = Variable(noise_y)
-    epochs = [40, 20, 20, 10]
+    epochs = [20, 20, 10, 10]
     accumulate = 0
     for stage in epochs:
         for _ in range(stage):
@@ -161,38 +165,41 @@ def main():
                 loss_real = loss_f(output_real, vy)
 
                 # feed fake images
-                #noise_v.normal_(0, 1)
-                #noise_y.random_(0, to=opt.nclass)
-                #with torch.no_grad():
-                #    vx_fake = gen(noise_v, noise_y_v)
-                #vx_fake_adv = attack_label_Linf_PGD(vx_fake, noise_y_v,
-                #         dis, opt.steps, opt.epsilon)
-                #_, output_fake = dis(vx_fake_adv)
-                #loss_fake = loss_f(output_fake, noise_y_v)
-
-                # combined loss
-                #loss_total = loss_real + opt.lam * loss_fake
-                loss_total = loss_real
+                if opt.lam > 0:
+                    noise_v.normal_(0, 1)
+                    noise_y.random_(0, to=opt.nclass)
+                    with torch.no_grad():
+                        vx_fake = gen(noise_v, noise_y_v)
+                    vx_fake_adv = attack_label_Linf_PGD(vx_fake, noise_y_v,
+                             dis, opt.steps, opt.epsilon)
+                    _, output_fake = dis(vx_fake_adv)
+                    loss_fake = loss_f(output_fake, noise_y_v)
+                    # combined loss
+                    loss_total = loss_real + opt.lam * loss_fake
+                else:
+                    loss_total = loss_real
+                dis.zero_grad()
                 loss_total.backward()
                 optimizer.step()
                 # accuracy on real / fake
-
-                #_, idx = torch.max(output_real, dim=1)
-                #correct_real = torch.sum(y.eq(idx.data))
-                #accuracy_real = correct_real / y.numel()
-                #_, idx = torch.max(output_fake, dim=1)
-                #correct_fake = torch.sum(noise_y.eq(idx.data))
-                #accuracy_fake = correct_fake / noise_y.numel()
-                #print('[{}][{}/{}] acc_real: {}, acc_fake: {}'.format(
-                #    accumulate, it, len(loader), accuracy_real, accuracy_fake))
-                #sys.stdout.flush()
+                _, idx = torch.max(output_real, dim=1)
+                correct_real = torch.sum(y.eq(idx.data)).item()
+                accuracy_real = correct_real / y.numel()
+                if opt.lam > 0:
+                    _, idx = torch.max(output_fake, dim=1)
+                    correct_fake = torch.sum(noise_y.eq(idx.data)).item()
+                    accuracy_fake = correct_fake / noise_y.numel()
+                    print(f'[{accumulate}][{it}/{len(loader)}] acc_real: {accuracy_real}, acc_fake: {accuracy_fake}')
+                else:
+                    print(f'[{accumulate}][{it}/{len(loader)}] acc_real: {accuracy_real}, acc_fake: NA')
+                sys.stdout.flush()
             # test
             test_acc(loader_test, dis)
             # save model
-            torch.save(dis.state_dict(), './{}/dis_finetune_{}.pth'.format(opt.out_f, accumulate))
+            torch.save(dis.state_dict(), f'./{opt.out_f}/dis_finetune_{accumulate}.pth')
         opt.lr /= 10
-        optimizer = torch.optim.SGD(dis.parameters(), opt.lr)
-
+        #optimizer = torch.optim.SGD(dis.parameters(), lr=opt.lr, momentum=0.9, weight_decay=5.0e-4)
+        optimizer = get_optimizer(dis.parameters())
 
 if __name__ == "__main__":
     main()
