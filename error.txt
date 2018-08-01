@@ -1,94 +1,28 @@
-/home/luinx/AdvGAN/gen_models/resnet_small.py:16: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
+/home/luinx/AdvGAN/gen_models/resnet_64.py:16: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
   nn.init.xavier_uniform(self.l1.weight, 1.0)
-/home/luinx/AdvGAN/gen_models/resblocks.py:25: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c1.weight, math.sqrt(2.0))
-/home/luinx/AdvGAN/gen_models/resblocks.py:27: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c2.weight, math.sqrt(2.0))
-/home/luinx/AdvGAN/layers/cat_cond_bn.py:30: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.gammas.weight, initGamma)
-/home/luinx/AdvGAN/layers/cat_cond_bn.py:32: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.betas.weight, initBeta)
-/home/luinx/AdvGAN/gen_models/resblocks.py:38: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c_sc.weight, 1.0)
-/home/luinx/AdvGAN/gen_models/resnet_small.py:23: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b7.weight, 1.0) #XXX this is different from default initialization method
-/home/luinx/AdvGAN/gen_models/resnet_small.py:25: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.l7.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:63: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c1.weight, gain=math.sqrt(2.0))
-/home/luinx/AdvGAN/dis_models/resblocks.py:65: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c2.weight, gain=math.sqrt(2.0))
-/home/luinx/AdvGAN/dis_models/resblocks.py:67: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c_sc.weight, gain=1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:70: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b1.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:72: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b2.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:74: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b_sc.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:19: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c1.weight, gain=math.sqrt(2.0))
-/home/luinx/AdvGAN/dis_models/resblocks.py:21: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c2.weight, gain=math.sqrt(2.0))
-/home/luinx/AdvGAN/dis_models/resblocks.py:24: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.c_sc.weight, gain=1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:27: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b1.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:29: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b2.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resblocks.py:32: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
-  nn.init.constant(self.b_sc.weight, 1.0)
-/home/luinx/AdvGAN/dis_models/resnet_small.py:17: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.l7.weight, gain=1.0)
-/home/luinx/AdvGAN/dis_models/resnet_small.py:20: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
-  nn.init.xavier_uniform(self.l_y.weight, gain=1.0)
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 17104896 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 17629184 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 327680 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 5242880 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 3368026112 bytes but only got 0. Skipping tag 7
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 20905984 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 21430272 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 21954560 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 22478848 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 23003136 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 23527424 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 24051712 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 589824 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 24576000 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 3300917248 bytes but only got 0. Skipping tag 7
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 4294901760 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 25165824 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 31457280 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 25100288 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 25624576 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 26148864 bytes but only got 0. Skipping tag 5
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 196608 bytes but only got 0. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 65536 bytes but only got 1078. Skipping tag 3
-  " Skipping tag %s" % (size, len(data), tag))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:742: UserWarning: Corrupt EXIF data.  Expecting to read 12 bytes but only got 0. 
-  warnings.warn(str(msg))
-/home/luinx/miniconda3/lib/python3.6/site-packages/PIL/TiffImagePlugin.py:725: UserWarning: Possibly corrupt EXIF data.  Expecting to read 2555904 bytes but only got 0. Skipping tag 0
-  " Skipping tag %s" % (size, len(data), tag))
+/home/luinx/AdvGAN/gen_models/resnet_64.py:22: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
+  nn.init.constant(self.b6.weight, 1.0) #XXX this is different from default initialization method
+/home/luinx/AdvGAN/gen_models/resnet_64.py:24: UserWarning: nn.init.xavier_uniform is now deprecated in favor of nn.init.xavier_uniform_.
+  nn.init.xavier_uniform(self.l6.weight, 1.0)
+Traceback (most recent call last):
+  File "./eval_inception.py", line 87, in <module>
+    main()
+  File "./eval_inception.py", line 83, in main
+    mean, std = calc_inception()
+  File "./eval_inception.py", line 77, in calc_inception
+    imgs, resize = gen_imgs()
+  File "./eval_inception.py", line 55, in gen_imgs
+    gen = load_model()
+  File "./eval_inception.py", line 40, in load_model
+    gen = gen.cuda()
+  File "/home/luinx/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 249, in cuda
+    return self._apply(lambda t: t.cuda(device))
+  File "/home/luinx/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 176, in _apply
+    module._apply(fn)
+  File "/home/luinx/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 182, in _apply
+    param.data = fn(param.data)
+  File "/home/luinx/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 249, in <lambda>
+    return self._apply(lambda t: t.cuda(device))
+  File "/home/luinx/miniconda3/lib/python3.6/site-packages/torch/cuda/__init__.py", line 146, in _lazy_init
+    def _lazy_init():
+KeyboardInterrupt

@@ -22,20 +22,20 @@ class Block(nn.Module):
         hidden_channels = out_channels if hidden_channels is None else hidden_channels
         self.n_classes = n_classes
         self.c1 = nn.Conv2d(in_channels, hidden_channels, kernel_size=ksize, padding=pad)
-        nn.init.xavier_uniform(self.c1.weight, math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c1.weight, math.sqrt(2.0))
         self.c2 = nn.Conv2d(hidden_channels, out_channels, kernel_size=ksize, padding=pad)
-        nn.init.xavier_uniform(self.c2.weight, math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c2.weight, math.sqrt(2.0))
         if n_classes > 0:
             self.b1 = CatCondBatchNorm2d(in_channels, n_cat=n_classes)
             self.b2 = CatCondBatchNorm2d(hidden_channels, n_cat=n_classes)
         else:
             self.b1 = nn.BatchNorm2d(in_channels)
-            nn.init.constant(self.b1.weight, 1.0)
+            nn.init.constant_(self.b1.weight, 1.0)
             self.b2 = nn.BatchNorm2d(hidden_channels)
-            nn.init.constant(self.b2.weight, 1.0)
+            nn.init.constant_(self.b2.weight, 1.0)
         if self.learnable_sc:
             self.c_sc = nn.Conv2d(in_channels, out_channels, kernel_size=1, padding=0)
-            nn.init.xavier_uniform(self.c_sc.weight, 1.0)
+            nn.init.xavier_uniform_(self.c_sc.weight, 1.0)
 
     def residual(self, x, y=None):
         h = x

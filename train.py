@@ -33,6 +33,7 @@ parser.add_argument('--max_epoch', type=int, required=True)
 parser.add_argument('--lr', type=float, default=0.0002)
 parser.add_argument('--adv_steps', type=int, required=True)
 parser.add_argument('--epsilon', type=float, required=True)
+parser.add_argument('--our_loss', action='store_true', default=False)
 opt = parser.parse_args()
 
 def load_models():
@@ -55,7 +56,7 @@ def load_models():
         from gen_models.resnet import ResNetGenerator
         from dis_models.resnet import ResNetAC
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
-        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass)
+        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass, bn=True)
     else:
         raise ValueError("Unknown model name: {}".format(opt.model))
     if opt.ngpu > 0:
@@ -72,7 +73,7 @@ def load_models():
 def get_loss():
     return loss_nll, loss_nll
 
-def make_optimizer(model, beta1=0.9, beta2=0.999):
+def make_optimizer(model, beta1=0, beta2=0.9):
     optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr, betas=(beta1, beta2))
     return optimizer
 
@@ -161,7 +162,7 @@ def train():
                 loss_g.backward()
                 opt_g.step()
                 print('[{}/{}][{}/{}][G_ITER] loss_g: {}'.format(epoch, opt.max_epoch-1, \
-                        count+1, len(train_loader), loss_g.data[0]))
+                        count+1, len(train_loader), loss_g.item()))
             # update discriminator
             dis.zero_grad()
             # feed real data
@@ -173,9 +174,9 @@ def train():
             v_x_real_adv = attack_Linf_PGD(v_x_real, ones, v_y_real, dis, Ld, opt.adv_steps, opt.epsilon)
             d_real_bin, d_real_multi = dis(v_x_real_adv)
             # accuracy for real images
-            positive = torch.sum(d_real_bin.data > 0)
+            positive = torch.sum(d_real_bin.data > 0).item()
             _, idx = torch.max(d_real_multi.data, dim=1)
-            correct_real = torch.sum(idx.eq(y_real))
+            correct_real = torch.sum(idx.eq(y_real)).item()
             total_real = y_real.numel()
             # loss for real images
             loss_d_real = Ld(d_real_bin, ones, d_real_multi, v_y_real, lam=0.5)
@@ -187,17 +188,20 @@ def train():
                 v_x_fake = gen(vz, y=v_y_fake)
             d_fake_bin, d_fake_multi = dis(v_x_fake.detach())
             # accuracy for fake images
-            negative = torch.sum(d_fake_bin.data > 0)
+            negative = torch.sum(d_fake_bin.data > 0).item()
             _, idx = torch.max(d_fake_multi.data, dim=1)
-            correct_fake = torch.sum(idx.eq(y_fake))
+            correct_fake = torch.sum(idx.eq(y_fake)).item()
             total_fake = y_fake.numel()
             # loss for fake images
-            loss_d_fake = Ld(d_fake_bin, zeros, d_fake_multi, v_y_fake, lam=1)
+            if opt.our_loss:
+                loss_d_fake = Ld(d_fake_bin, zeros, d_fake_multi, v_y_fake, lam=1)
+            else:
+                loss_d_fake = Ld(d_fake_bin, zeros, d_fake_multi, v_y_fake, lam=0.5)
             loss_d = loss_d_real + loss_d_fake
             loss_d.backward()
             opt_d.step()
             print('[{}/{}][{}/{}][D_ITER] loss_d: {} acc_r: {}, acc_r@1: {}, acc_f: {}, acc_f@1: {}'.format(
-                epoch, opt.max_epoch-1, count+1, len(train_loader), loss_d.data[0], positive / total_real,
+                epoch, opt.max_epoch-1, count+1, len(train_loader), loss_d.item(), positive / total_real,
                 correct_real / total_real, negative / total_fake, correct_fake / total_fake))
         # generate samples
         with torch.no_grad():

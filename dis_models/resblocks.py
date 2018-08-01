@@ -16,20 +16,20 @@ class Block(nn.Module):
         self.learnable_sc = (in_channels != out_channels) or downsample
         hidden_channels = in_channels if hidden_channels is None else hidden_channels
         self.c1 = nn.Conv2d(in_channels, hidden_channels, ksize, 1, pad, bias=False)
-        nn.init.xavier_uniform(self.c1.weight, gain=math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c1.weight, gain=math.sqrt(2.0))
         self.c2 = nn.Conv2d(hidden_channels, out_channels, ksize, 1, pad, bias=False)
-        nn.init.xavier_uniform(self.c2.weight, gain=math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c2.weight, gain=math.sqrt(2.0))
         if self.learnable_sc:
             self.c_sc = nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False)
-            nn.init.xavier_uniform(self.c_sc.weight, gain=1.0)
+            nn.init.xavier_uniform_(self.c_sc.weight, gain=1.0)
         if self.bn:
             self.b1 = nn.BatchNorm2d(hidden_channels)
-            nn.init.constant(self.b1.weight, 1.0)
+            nn.init.constant_(self.b1.weight, 1.0)
             self.b2 = nn.BatchNorm2d(out_channels)
-            nn.init.constant(self.b2.weight, 1.0)
+            nn.init.constant_(self.b2.weight, 1.0)
             if self.learnable_sc:
                 self.b_sc = nn.BatchNorm2d(out_channels)
-                nn.init.constant(self.b_sc.weight, 1.0)
+                nn.init.constant_(self.b_sc.weight, 1.0)
 
     def residual(self, x):
         h = x
@@ -60,18 +60,18 @@ class OptimizedBlock(nn.Module):
         self.activation = activation
         self.bn = bn
         self.c1 = nn.Conv2d(in_channels, out_channels, ksize, 1, pad, bias=False)
-        nn.init.xavier_uniform(self.c1.weight, gain=math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c1.weight, gain=math.sqrt(2.0))
         self.c2 = nn.Conv2d(out_channels, out_channels, ksize, 1, pad, bias=False)
-        nn.init.xavier_uniform(self.c2.weight, gain=math.sqrt(2.0))
+        nn.init.xavier_uniform_(self.c2.weight, gain=math.sqrt(2.0))
         self.c_sc = nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False)
-        nn.init.xavier_uniform(self.c_sc.weight, gain=1.0)
+        nn.init.xavier_uniform_(self.c_sc.weight, gain=1.0)
         if self.bn:
             self.b1 = nn.BatchNorm2d(out_channels)
-            nn.init.constant(self.b1.weight, 1.0)
+            nn.init.constant_(self.b1.weight, 1.0)
             self.b2 = nn.BatchNorm2d(out_channels)
-            nn.init.constant(self.b2.weight, 1.0)
+            nn.init.constant_(self.b2.weight, 1.0)
             self.b_sc = nn.BatchNorm2d(out_channels)
-            nn.init.constant(self.b_sc.weight, 1.0)
+            nn.init.constant_(self.b_sc.weight, 1.0)
 
     def residual(self, x):
         h = x
