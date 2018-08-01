@@ -1,4 +1,4 @@
 # AdvGAN
-#From Adversarial Training to Generative AdversarialNetworks#
+*From Adversarial Training to Generative AdversarialNetworks*
 
-To release soon
+Still under construction
