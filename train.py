@@ -58,7 +58,7 @@ def load_models():
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
         dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass, bn=True)
     else:
-        raise ValueError("Unknown model name: {}".format(opt.model))
+        raise ValueError(f"Unknown model name: {opt.model}")
     if opt.ngpu > 0:
         gen, dis = gen.cuda(), dis.cuda()
         gen, dis = torch.nn.DataParallel(gen, device_ids=range(opt.ngpu)), \
@@ -66,8 +66,8 @@ def load_models():
     else:
         raise ValueError("Must run on gpus, ngpu > 0")
     if opt.starting_epoch > 0:
-        gen.load_state_dict(torch.load('./{}/gen_epoch_{}.pth'.format(opt.out_f, opt.starting_epoch - 1)))
-        dis.load_state_dict(torch.load('./{}/dis_epoch_{}.pth'.format(opt.out_f, opt.starting_epoch - 1)))
+        gen.load_state_dict(torch.load(f'./{opt.out_f}/gen_epoch_{opt.starting_epoch-1}.pth'))
+        dis.load_state_dict(torch.load(f'./{opt.out_f}/dis_epoch_{opt.starting_epoch-1}.pth'))
     return gen, dis
 
 def get_loss():
@@ -78,6 +78,7 @@ def make_optimizer(model, beta1=0, beta2=0.9):
     return optimizer
 
 def make_dataset():
+    # Small noise is added, following SN-GAN
     def noise(x):
         return x + torch.FloatTensor(x.size()).uniform_(0, 1.0 / 128)
     if opt.dataset == "cifar10":
@@ -117,7 +118,7 @@ def make_dataset():
         data = ImageFolder(opt.root, transform=trans)
         loader = DataLoader(data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
     else:
-        raise ValueError("Unknown dataset: {}".format(opt.dataset))
+        raise ValueError(f"Unknown dataset: {opt.dataset}")
     return loader
 
 def train():
@@ -153,16 +154,13 @@ def train():
                 y_fake.random_(0, to=opt.nclass)
                 v_y_fake = Variable(y_fake)
                 v_x_fake = gen(vz, y=v_y_fake)
-                #ones.data.resize_(v_y_fake.size())
                 v_x_fake_adv = v_x_fake
-                #v_x_fake_adv = attack_FGSM(v_x_fake, ones, v_y_fake, dis, Lg)
                 d_fake_bin, d_fake_multi = dis(v_x_fake_adv)
                 ones.data.resize_as_(d_fake_bin.data)
                 loss_g = Lg(d_fake_bin, ones, d_fake_multi, v_y_fake, lam=0.5)
                 loss_g.backward()
                 opt_g.step()
-                print('[{}/{}][{}/{}][G_ITER] loss_g: {}'.format(epoch, opt.max_epoch-1, \
-                        count+1, len(train_loader), loss_g.item()))
+                print(f'[{epoch}/{opt.max_epoch-1}][{count+1}/{len(train_loader)}][G_ITER] loss_g: {loss_g.item()}')
             # update discriminator
             dis.zero_grad()
             # feed real data
@@ -170,7 +168,6 @@ def train():
             v_x_real, v_y_real = Variable(x_real), Variable(y_real)
             # find adversarial example
             ones.data.resize_(y_real.size())
-            #v_x_real_adv = v_x_real
             v_x_real_adv = attack_Linf_PGD(v_x_real, ones, v_y_real, dis, Ld, opt.adv_steps, opt.epsilon)
             d_real_bin, d_real_multi = dis(v_x_real_adv)
             # accuracy for real images
@@ -200,19 +197,17 @@ def train():
             loss_d = loss_d_real + loss_d_fake
             loss_d.backward()
             opt_d.step()
-            print('[{}/{}][{}/{}][D_ITER] loss_d: {} acc_r: {}, acc_r@1: {}, acc_f: {}, acc_f@1: {}'.format(
-                epoch, opt.max_epoch-1, count+1, len(train_loader), loss_d.item(), positive / total_real,
-                correct_real / total_real, negative / total_fake, correct_fake / total_fake))
+            print(f'[{epoch}/{opt.max_epoch-1}][{count+1}/{len(train_loader)}][D_ITER] loss_d: {loss_d.item()} acc_r: {positive/total_real}, acc_r@1: {correct_real/total_real}, acc_f: {negative/total_fake}, acc_f@1: {correct_fake/total_fake}')
         # generate samples
         with torch.no_grad():
             fixed_x_fake = gen(fixed_z, y=fixed_y_fake)
             fixed_x_fake.data.mul_(0.5).add_(0.5)
         x_real.mul_(0.5).add_(0.5)
-        save_image(fixed_x_fake.data, './{}/sample_epoch_{}.png'.format(opt.out_f, epoch), nrow=8)
-        save_image(x_real, './{}/real.png'.format(opt.out_f))
+        save_image(fixed_x_fake.data, f'./{opt.out_f}/sample_epoch_{epoch}.png', nrow=8)
+        save_image(x_real, f'./{opt.out_f}/real.png')
         # save model
-        torch.save(dis.state_dict(), './{}/dis_epoch_{}.pth'.format(opt.out_f, epoch))
-        torch.save(gen.state_dict(), './{}/gen_epoch_{}.pth'.format(opt.out_f, epoch))
+        torch.save(dis.state_dict(), f'./{opt.out_f}/dis_epoch_{epoch}.pth')
+        torch.save(gen.state_dict(), f'./{opt.out_f}/gen_epoch_{epoch}.pth')
         # change step size
         if (epoch + 1) % 50 == 0:
             opt.lr /= 2

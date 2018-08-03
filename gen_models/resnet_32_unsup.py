@@ -7,17 +7,17 @@ class UpResBlock(nn.Module):
     def __init__(self, ch):
         super(UpResBlock, self).__init__()
         self.c0 = nn.Conv2d(ch, ch, 3, 1, 1)
-        nn.init.normal(self.c0.weight, 0.02)
+        nn.init.normal_(self.c0.weight, 0.02)
         self.c1 = nn.Conv2d(ch, ch, 3, 1, 1)
-        nn.init.normal(self.c1.weight, 0.02)
+        nn.init.normal_(self.c1.weight, 0.02)
         self.cs = nn.Conv2d(ch, ch, 3, 1, 1)
-        nn.init.normal(self.cs.weight, 0.02)
+        nn.init.normal_(self.cs.weight, 0.02)
         self.bn0 = nn.BatchNorm2d(ch)
-        nn.init.constant(self.bn0.weight, 1.0)
-        nn.init.constant(self.bn0.bias, 0.0)
+        nn.init.constant_(self.bn0.weight, 1.0)
+        nn.init.constant_(self.bn0.bias, 0.0)
         self.bn1 = nn.BatchNorm2d(ch)
-        nn.init.constant(self.bn0.weight, 1.0)
-        nn.init.constant(self.bn0.bias, 0.0)
+        nn.init.constant_(self.bn0.weight, 1.0)
+        nn.init.constant_(self.bn0.bias, 0.0)
 
     @classmethod
     def upsample(cls, x):
@@ -37,15 +37,15 @@ class ResNetGenerator(nn.Module):
         self.dim_z = dim_z
         self.ch = ch
         self.l0 = nn.Linear(dim_z, (bottom_width ** 2) * ch * 4)
-        nn.init.normal(self.l0.weight, math.sqrt(1.0 / dim_z))
+        nn.init.normal_(self.l0.weight, math.sqrt(1.0 / dim_z))
         self.r0 = UpResBlock(ch * 4)
         self.r1 = UpResBlock(ch * 4)
         self.r2 = UpResBlock(ch * 4)
         self.bn2 = nn.BatchNorm2d(ch * 4)
-        nn.init.constant(self.bn2.weight, 1.0)
-        nn.init.constant(self.bn2.bias, 0.0)
+        nn.init.constant_(self.bn2.weight, 1.0)
+        nn.init.constant_(self.bn2.bias, 0.0)
         self.c3 = nn.Conv2d(ch * 4, 3, 3, 1, 1)
-        nn.init.normal(self.c3.weight, 0.02)
+        nn.init.normal_(self.c3.weight, 0.02)
 
     def forward(self, x):
         h = F.relu(self.l0(x))

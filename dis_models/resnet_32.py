@@ -12,10 +12,10 @@ class ResNetAC(nn.Module):
         self.block3 = Block(ch * 2, ch * 2, activation=activation, downsample=False, bn=bn)
         self.block4 = Block(ch * 2, ch * 2, activation=activation, downsample=False, bn=bn)
         self.l5 = nn.Linear(ch * 2, 1)
-        nn.init.xavier_uniform(self.l5.weight, gain=1.0)
+        nn.init.xavier_uniform_(self.l5.weight, gain=1.0)
         if n_classes > 0:
             self.l_y = nn.Linear(ch * 2, n_classes)
-            nn.init.xavier_uniform(self.l_y.weight, gain=1.0)
+            nn.init.xavier_uniform_(self.l_y.weight, gain=1.0)
 
     def forward(self, x):
         h = x

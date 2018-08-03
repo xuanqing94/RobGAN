@@ -39,7 +39,7 @@ def load_model():
         from dis_models.resnet import ResNetAC
         dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass)
     else:
-        raise ValueError("Unknown model name: {}".format(opt.model))
+        raise ValueError(f"Unknown model name: {opt.model}")
     if opt.ngpu > 0:
         dis = dis.cuda()
         dis = torch.nn.DataParallel(dis, device_ids=range(opt.ngpu))
@@ -65,7 +65,7 @@ def make_dataset():
         data = CIFAR10(root=opt.root, train=True, download=False, transform=trans)
         loader = DataLoader(data, batch_size=100, shuffle=True, num_workers=opt.workers)
     else:
-        raise ValueError("Unknown dataset: {}".format(opt.dataset))
+        raise ValueError(f"Unknown dataset: {opt.dataset}")
     return loader
 
 
@@ -91,7 +91,7 @@ def main(epsilon):
         label_correct = idx.eq(y_real)
         correct_label += torch.sum(label_correct)
         total += y_real.numel()
-    print('{}, {}'.format(epsilon, correct_label / total))
+    print(f'{epsilon}, {correct_label/total}')
 
 if __name__ == "__main__":
     print('#c, accuracy')

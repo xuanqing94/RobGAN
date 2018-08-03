@@ -35,7 +35,7 @@ def load_model():
         from gen_models.resnet_small import ResNetGenerator
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
     else:
-        raise ValueError("Unknown model name: {}".format(opt.model))
+        raise ValueError(f"Unknown model name: {opt.model}")
     if opt.ngpu > 0:
         gen = gen.cuda()
         gen = torch.nn.DataParallel(gen, device_ids=range(opt.ngpu))
@@ -47,7 +47,8 @@ def load_model():
 def load_inception():
     inception_model = inception_v3(pretrained=True, transform_input=False)
     inception_model.cuda()
-    inception_model = torch.nn.DataParallel(inception_model, device_ids=range(opt.ngpu))
+    inception_model = torch.nn.DataParallel(inception_model, \
+            device_ids=range(opt.ngpu))
     inception_model.eval()
     return inception_model
 
@@ -76,12 +77,13 @@ def gen_imgs():
 def calc_inception():
     imgs, resize = gen_imgs()
     model = load_inception()
-    mean_score, std_score = score(model, imgs, opt.batch_size, resize, opt.splits)
+    mean_score, std_score = score(model, imgs, opt.batch_size, \
+            resize, opt.splits)
     return mean_score, std_score
 
 def main():
     mean, std = calc_inception()
-    print("Mean: {}, Std: {}".format(mean, std))
+    print(f"Mean: {mean}, Std: {std}")
 
 if __name__ == "__main__":
     main()

@@ -57,7 +57,7 @@ def load_models():
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
         dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass)
     else:
-        raise ValueError("Unknown model name: {}".format(opt.model))
+        raise ValueError(f"Unknown model name: {opt.model}")
     if opt.ngpu > 0:
         gen, dis = gen.cuda(), dis.cuda()
         gen, dis = torch.nn.DataParallel(gen, device_ids=range(opt.ngpu)), \
@@ -65,7 +65,7 @@ def load_models():
     else:
         raise ValueError("Must run on gpus, ngpu > 0")
     gen.load_state_dict(torch.load(opt.netG))
-    #dis.load_state_dict(torch.load(opt.netD))
+    dis.load_state_dict(torch.load(opt.netD))
     return gen, dis
 
 def make_dataset():
@@ -79,7 +79,7 @@ def make_dataset():
         data = CIFAR10(root=opt.root, train=True, download=False, transform=trans)
         data_test = CIFAR10(root=opt.root, train=False, download=False, transform=trans)
         loader = DataLoader(data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
-        loader_test = DataLoader(data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
+        loader_test = DataLoader(data_test, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
     elif opt.dataset == "dog_and_cat_64":
         trans = tfs.Compose([
             tfs.RandomResizedCrop(opt.img_width, scale=(0.8, 0.9), ratio=(1.0, 1.0)),
@@ -112,7 +112,7 @@ def make_dataset():
         data = ImageFolder(opt.root, transform=trans)
         loader = DataLoader(data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
     else:
-        raise ValueError("Unknown dataset: {}".format(opt.dataset))
+        raise ValueError(f"Unknown dataset: {opt.dataset}")
     return loader, loader_test
 
 def test_acc(loader_test, dis):
