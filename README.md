@@ -49,9 +49,39 @@ CUDA_VISIBLE_DEVICES=1,2,3,4,5 python ./train.py \
     --epsilon 0.03125 \ # PGD-attack strength
     --our_loss # add this flag for our NEW loss
 ```
+Key arguments: `--model`, `--nclass`, `--dataset`, `--img_width`, `--epsilon`. We keep other arguments unchanged through all experiments in our paper.
 
 ## Step 2. Fine-tuning
+Similarly, we can do fine-tuning by running `./finetune.sh`
+```bash
+mkdir ckpt.adv-5.64px-143ImageNet.finetune # storing the output models
+last_epoch=100 # you might change this
+CUDA_VISIBLE_DEVICES=2,3,4,5 python finetune.py \
+    --model resnet_64 \
+    --netD ./ckpt.adv-5.64px-143ImageNet/dis_epoch_${last_epoch}.pth \
+    --netG ./ckpt.adv-5.64px-143ImageNet/gen_epoch_${last_epoch}.pth \
+    --ndf 64 \
+    --ngf 64 \
+    --nclass 143 \
+    --dataset dog_and_cat_64 \
+    --batch_size 128 \
+    --root /data1/sngan_dog_cat \
+    --img_width 64 \
+    --steps 5 \
+    --epsilon 0.03125 \
+    --lam 0.3 \ # find a suitable weight for fake images, typically 0.3~0.8
+    --lr 1.0e-3 \
+    --ngpu 4 \ # use as many GPUs as you can!
+    --out_f ckpt.adv-5.64px-143ImageNet.finetune \
+    > >(tee log_finetune.txt) 2>error.txt
+```
+Key arguments: `$last_epoch`, `--model`, `--nclass`, `--dataset`, `--img_width`, `--epsilon`, `--lam`. We keep other arguments unchanged through all experiments in our paper.
+
+
+## Step 3. Accuracy under attack
 TODO
 
 ## Optional (TODO)
 Evaluating inception scores, accuracy under attack, etc.
+
+
