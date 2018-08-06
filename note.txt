@@ -1,4 +1,0 @@
-stable (5.3~5.5): no attack, alpha=0.0002, beta1=0.5, beta2=0.999, ndis=1
-one adv step (5.4): eps=0.01, alpha=0.0002, beta1=0.5, beta2=0.999, ndis=1
-three adv step (5.28): eps=0.01, alpha=0.0002, beta1=0.5, beta2=0.999, ndis=1
-
