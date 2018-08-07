@@ -1,3 +1,4 @@
+# Modified from PyTorch --> SGD optimizer
 import torch
 from torch.optim.optimizer import Optimizer, required
 

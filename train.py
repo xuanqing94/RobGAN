@@ -56,7 +56,7 @@ def load_models():
         from gen_models.resnet import ResNetGenerator
         from dis_models.resnet import ResNetAC
         gen = ResNetGenerator(ch=opt.ngf, dim_z=opt.nz, bottom_width=opt.start_width, n_classes=opt.nclass)
-        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass, bn=False)
+        dis = ResNetAC(ch=opt.ndf, n_classes=opt.nclass, bn=True)
     else:
         raise ValueError(f"Unknown model name: {opt.model}")
     if opt.ngpu > 0:
