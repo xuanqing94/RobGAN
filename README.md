@@ -39,7 +39,7 @@ CUDA_VISIBLE_DEVICES=1,2,3,4,5 python ./train.py \
     --nclass 143 \
     --batch_size 64 \
     --start_width 4 \
-    --dataset imagenet \
+    --dataset dog_and_cat_64 \
     --root /data1/sngan_dog_cat \
     --img_width 64 \
     --iter_d 5 \

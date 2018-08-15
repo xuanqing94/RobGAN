@@ -6,3 +6,4 @@ error.txt
 erorr.log
 eval_accuracy.py
 !2-step.png
+dcgan.py
