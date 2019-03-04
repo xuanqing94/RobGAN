@@ -1,7 +1,5 @@
 # AdvGAN
-*From Adversarial Training to Generative Adversarial Networks*
-
-**Still under construction**
+*Adv-GAN: Generator, Discriminator and Adversarial Attacker*
 
 ![2-step](./.img/2-step.png "Adv-GAN")
 
@@ -87,4 +85,15 @@ TODO
 ## Optional (TODO)
 Evaluating inception scores, accuracy under attack, etc.
 
+## Cite
+Please consider to cite this paper if you find it helpful in your research:
 
+    @inproceedings{huang2017densely,
+      title={Densely connected convolutional networks},
+        author={Huang, Gao and Liu, Zhuang and van der Maaten, Laurens and Weinberger, Kilian Q },
+          booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+            year={2017}
+    }
+
+## Acknowledgement
+We would like to thank develpers of [SN-GAN](https://github.com/pfnet-research/sngan_projection) for providing the source code.
