@@ -89,10 +89,10 @@ Evaluating inception scores, accuracy under attack, etc.
 Please consider to cite this paper if you find it helpful in your research:
 
     @inproceedings{liu2019advgan,
-      title={Adv-GAN: Generator, Discriminator and Adversarial Attacker},
+        title={Adv-GAN: Generator, Discriminator and Adversarial Attacker},
         author={Liu, Xuanqing and Hsieh, Cho-Jui},
-          booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-            year={2019}
+        booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+        year={2019}
     }
 
 ## Acknowledgement
