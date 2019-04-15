@@ -1,7 +1,7 @@
-# AdvGAN
-*Adv-GAN: Generator, Discriminator and Adversarial Attacker*
+# Rob-GAN
+*Rob-GAN: Generator, Discriminator and Adversarial Attacker*
 
-![2-step](./.img/2-step.png "Adv-GAN")
+![2-step](./.img/2-step.png "Rob-GAN")
 
 
 ## Requirements
@@ -89,7 +89,7 @@ Evaluating inception scores, accuracy under attack, etc.
 Please consider to cite this paper if you find it helpful in your research:
 
     @inproceedings{liu2019advgan,
-        title={Adv-GAN: Generator, Discriminator and Adversarial Attacker},
+        title={Rob-GAN: Generator, Discriminator and Adversarial Attacker},
         author={Liu, Xuanqing and Hsieh, Cho-Jui},
         booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
         year={2019}
