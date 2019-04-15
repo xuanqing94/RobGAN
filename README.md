@@ -88,7 +88,7 @@ Evaluating inception scores, accuracy under attack, etc.
 ## Cite
 Please consider to cite this paper if you find it helpful in your research:
 
-    @inproceedings{liu2019advgan,
+    @inproceedings{liu2019robgan,
         title={Rob-GAN: Generator, Discriminator and Adversarial Attacker},
         author={Liu, Xuanqing and Hsieh, Cho-Jui},
         booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
